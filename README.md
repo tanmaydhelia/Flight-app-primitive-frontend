@@ -1,59 +1,151 @@
-# FlightBookingApp
+# Flight Booking Microservices Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.3.
+A flight booking system built with a microservices architecture using Spring Boot (backend) and Angular (frontend). Features include user authentication (JWT), flight search, booking management, and notifications via Kafka.
 
-## Development server
+## Architecture Overview
 
-To start a local development server, run:
+Core components:
+
+- **API Gateway (Port 9000):** Single entry point, routing, and security.
+- **Service Registry (Eureka):** Service discovery.
+- **Identity Service:** User registration and JWT authentication.
+- **Flight Service:** Flight inventory, search, and admin operations.
+- **Booking Service:** Manage passenger bookings and tickets.
+- **Notification Service:** Kafka consumer for alerts/notifications.
+- **Config Server:** Centralized configuration.
+
+## Microservices & Ports
+
+| Service | Port | Description |
+| :--- | :---: | :--- |
+| Service Registry | `8761` | Eureka server |
+| Config Server | `8888` | Centralized configuration |
+| API Gateway | `9000` | Frontend entry point |
+| Identity Service | `9091` | Auth & user management |
+| Flight Service | `9080` | Flight search & admin |
+| Booking Service | `9081` | Booking management |
+| Notification Service | `9082` | Kafka consumer |
+
+## Technology Stack
+
+- Backend: Java 17+, Spring Boot 3.x, Spring Cloud (Gateway, Eureka, Config, OpenFeign)  
+- Database: MySQL  
+- Messaging: Apache Kafka, Zookeeper  
+- Containerization: Docker, Docker Compose  
+- Frontend: Angular (standalone components)
+
+## Setup & Installation
+
+### 1. Prerequisites
+
+- Java 17 or higher  
+- Maven  
+- Docker Desktop (for MySQL and Kafka)  
+- Node.js (for Angular frontend)
+
+### 2. Infrastructure (MySQL, Kafka, Zookeeper)
+
+Use the provided `docker-compose.yml` to start MySQL, Kafka, and Zookeeper:
+
+```bash
+docker-compose up -d
+```
+
+Ports used by the composition:
+
+- MySQL: `3306`  
+- Kafka: `9092`  
+- Zookeeper: `2181`
+
+Note: The database is initialized automatically using `init.sql` (if included).
+
+### 3. Start the Microservices
+
+Recommended order to start services:
+
+1. Service Registry: `flightapp-service-registry`  
+2. Config Server: `config-server` (optional if using local properties)  
+3. Identity Service: `flightapp-identity-service`  
+4. Flight Service: `flightapp-flight-service`  
+5. Booking Service: `flightapp-booking-service`  
+6. Notification Service: `flightapp-notification-service`  
+7. API Gateway: `flightapp-api-gateway`
+
+To start each service from its project folder:
+
+```bash
+cd <service-folder-name>
+mvn spring-boot:run
+```
+
+### 4. Start the Frontend
+
+From the Angular project folder:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open the app at: http://localhost:4200
 
-## Code scaffolding
+## 🔌 API Endpoints (via API Gateway)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+All requests should be sent to the Gateway: `http://localhost:9000`
 
-```bash
-ng generate component component-name
-```
+Authentication
+- Register: `POST /auth/register`
+- Login (token): `POST /auth/token`
+- Validate: `GET /auth/validate?token=...`
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Flights
+- Search flights: `POST /flight/api/search`
+- Add flight (admin): `POST /flight/api/v1.0/flight/admin/airline/inventory/add`
 
-```bash
-ng generate --help
-```
+Bookings
+- Book ticket: `POST /booking/api/v1.0/flight/booking`
+- Cancel ticket: `DELETE /booking/api/v1.0/flight/booking/cancel/{pnr}`
 
-## Building
+## Security
 
-To build the project run:
+- JWT (JSON Web Token) secures protected endpoints.  
+- API Gateway validates the `Authorization` header for protected routes (Flight and Booking services).
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Part 2 — How the Frontend Accesses Spring Endpoints
 
-## Running unit tests
+The frontend uses the API Gateway pattern: the Angular app only communicates with the gateway at `http://localhost:9000`, which routes requests to appropriate microservices.
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### 1. Single Entry Point
+Frontend → API Gateway (`http://localhost:9000`)  
+Gateway → internal microservices (9091, 9080, 9081, ...)
 
-```bash
-ng test
-```
+### 2. Route Configuration (examples)
 
-## Running end-to-end tests
+A Gateway `application.properties` (or config) maps incoming paths to services.
 
-For end-to-end (e2e) testing, run:
+A. Authentication
+- Frontend request: `POST http://localhost:9000/auth/register`  
+- Gateway matches `Path=/auth/**` and forwards to Identity Service (`9091`) at `/auth/register`.
 
-```bash
-ng e2e
-```
+B. Flight Requests
+- Frontend request: `POST http://localhost:9000/flight/api/search`  
+- Gateway matches `Path=/flight/**`, applies `StripPrefix=1` (removes `/flight`), applies authentication filter, forwards to Flight Service (`9080`) at `/api/search`.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+C. Booking Requests
+- Frontend request: `POST http://localhost:9000/booking/api/v1.0/flight/booking`  
+- Gateway matches `Path=/booking/**`, `StripPrefix=1`, authentication filter, forwards to Booking Service (`9081`) at `/api/v1.0/flight/booking`.
 
-## Additional Resources
+### 3. Authentication Flow
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. Angular posts credentials to `POST http://localhost:9000/auth/token`.  
+2. Identity Service validates credentials and returns a JWT string.  
+3. Angular stores the token (e.g., in `localStorage`).  
+4. Subsequent requests include header: `Authorization: Bearer <token>` (via an HTTP interceptor).  
+5. API Gateway validates the JWT (using utilities like `JwtUtil`):
+    - If valid: request is forwarded to the target microservice.  
+    - If invalid: gateway responds with `401 Unauthorized` or `403 Forbidden`.
+
+---
+
+Keep service-specific configuration (ports, URLs, credentials) consistent across `application.properties` (or config server) and `docker-compose.yml` to avoid connectivity issues.
