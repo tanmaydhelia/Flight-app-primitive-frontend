@@ -25,8 +25,14 @@ export class Login {
     if (this.loginForm.valid) {
       const request = this.loginForm.value as any;
       
-      this.flightService.login(request).subscribe(() => {
-        this.router.navigate(['/search']);
+      this.flightService.login(request).subscribe({
+        next: (token) => {
+          console.log('Login successful, Token:', token);
+          this.router.navigate(['/search']);
+        },
+        error: (err) => {
+          alert('Login Failed: ' + err.message);
+        }
       });
     }
   }

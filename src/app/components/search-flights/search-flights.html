@@ -2,8 +2,8 @@
   <h2>Find Your Flight</h2>
 
   <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-box">
-    <input formControlName="from" placeholder="From (e.g. JFK)" />
-    <input formControlName="to" placeholder="To (e.g. LHR)" />
+    <input formControlName="from" placeholder="From (e.g. Del)" />
+    <input formControlName="to" placeholder="To (e.g. VNS)" />
     <input type="date" formControlName="journeyDate" />
     <select formControlName="tripType">
       <option value="ONE_WAY">One Way</option>

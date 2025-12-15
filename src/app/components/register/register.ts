@@ -1,11 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FlightService } from '../../services/flight';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
-  imports: [],
+  standalone:true,
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
-export class Register {
 
+export class Register {
+  private fb = inject(FormBuilder);
+  private flightService = inject(FlightService);
+  private router = inject(Router);
+
+  // 2. This is the property the HTML was looking for and couldn't find
+  registerForm = this.fb.group({
+    name: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]]
+  });
+
+  onSubmit() {
+    if (this.registerForm.valid) {
+      const user = this.registerForm.value as any;
+      
+      this.flightService.register(user).subscribe({
+        next: (response) => {
+          alert('Registration Successful! Please login.');
+          this.router.navigate(['/login']);
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Registration failed. Try again.');
+        }
+      });
+    }
+  }
 }
