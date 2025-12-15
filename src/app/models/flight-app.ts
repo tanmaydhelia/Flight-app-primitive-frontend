@@ -20,6 +20,7 @@ export interface FlightSearchRequest {
 export interface FlightSummary {
   flightId: number;
   airlineName: string;
+  airlineCode: string;
   price: number;
   fromAirport: string;
   toAirport: string;
