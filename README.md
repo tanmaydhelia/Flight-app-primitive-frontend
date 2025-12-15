@@ -146,6 +146,21 @@ C. Booking Requests
     - If valid: request is forwarded to the target microservice.  
     - If invalid: gateway responds with `401 Unauthorized` or `403 Forbidden`.
 
+===
+
+## Register
+![alt text](/readmeImages/image.png)
+![alt text](/readmeImages/image2.png)
 ---
+## Login
+![alt text](/readmeImages/image3.png)
+![alt text](/readmeImages/image4.png)
+---
+## Search
+![alt text](/readmeImages/image5.png)
+![alt text](/readmeImages/image6.png)
+![alt text](/readmeImages/image7.png)
+---
+
 
 Keep service-specific configuration (ports, URLs, credentials) consistent across `application.properties` (or config server) and `docker-compose.yml` to avoid connectivity issues.
