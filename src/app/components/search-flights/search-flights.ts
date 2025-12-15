@@ -16,21 +16,33 @@ export class SearchFlights {
   private flightService = inject(FlightService);
 
   searchResults = signal<FlightSummary[]>([]);
+  hasSearched = signal(false);
+  isLoading = signal(false);
 
   searchForm = this.fb.group({
-    from: ['JFK', Validators.required],
-    to: ['LHR', Validators.required],
+    from: ['DEL', Validators.required],
+    to: ['VNS', Validators.required],
     journeyDate: ['', Validators.required],
     tripType: ['ONE_WAY', Validators.required]
   });
 
   onSearch() {
     if (this.searchForm.valid) {
-      const criteria = this.searchForm.value as any;
+      this.isLoading.set(true);
+      this.hasSearched.set(true);
       
-      this.flightService.searchFlights(criteria).subscribe(data => {
-        // Update the signal with the new data
-        this.searchResults.set(data);
+      const request = this.searchForm.value as any;
+
+      this.flightService.searchFlights(request).subscribe({
+        next: (data) => {
+          this.searchResults.set(data);
+          this.isLoading.set(false);
+        },
+        error: (err) => {
+          console.error('Search failed', err);
+          this.isLoading.set(false);
+          alert('Could not fetch flights. Check console for details.');
+        }
       });
     }
   }
