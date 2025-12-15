@@ -1,1 +1,25 @@
-<p>search-flights works!</p>
+<div class="search-page">
+  <h2>Find Your Flight</h2>
+
+  <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-box">
+    <input formControlName="from" placeholder="From (e.g. JFK)" />
+    <input formControlName="to" placeholder="To (e.g. LHR)" />
+    <input type="date" formControlName="journeyDate" />
+    <select formControlName="tripType">
+      <option value="ONE_WAY">One Way</option>
+      <option value="ROUND_TRIP">Round Trip</option>
+    </select>
+    <button type="submit">Search</button>
+  </form>
+
+  <div class="results">
+    <div *ngFor="let flight of searchResults()" class="flight-card">
+      <h3>{{ flight.airlineName }}</h3>
+      <p>{{ flight.fromAirport }} ➔ {{ flight.toAirport }}</p>
+      <p>Price: \${{ flight.price }}</p>
+      <button>Book Now</button>
+    </div>
+
+    <p *ngIf="searchResults().length === 0">No flights found yet. Try JFK to LHR.</p>
+  </div>
+</div>
