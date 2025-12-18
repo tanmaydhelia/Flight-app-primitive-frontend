@@ -1,17 +1,324 @@
+/* Main Search Page Container */
 .search-page {
-  max-width: 600px;
-  margin: 2rem auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
+
+/* Page Title */
+.search-page h2 {
+  text-align: center;
+  color: #333;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Search Box Form */
 .search-box {
   display: grid;
-  gap: 10px;
-  background: #f4f4f4;
-  padding: 20px;
-  border-radius: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  animation: slideUp 0.6s ease-out;
 }
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Input Fields */
+.search-box input,
+.search-box select {
+  padding: 0.875rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+  font-family: inherit;
+}
+
+.search-box input:focus,
+.search-box select:focus {
+  outline: none;
+  border-color: #667eea;
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.search-box input::placeholder {
+  color: #aaa;
+}
+
+/* Search Button */
+.search-box button {
+  padding: 0.875rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.search-box button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.search-box button:active {
+  transform: translateY(0);
+}
+
+.results {
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Flight Cards */
 .flight-card {
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin-top: 15px;
-  border-radius: 5px;
+  background: white;
+  border: 2px solid #e0e0e0;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1.5rem;
+  align-items: center;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.flight-card:hover {
+  border-color: #667eea;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+  transform: translateY(-4px);
+}
+
+/* Flight Card Content */
+.flight-card h3 {
+  color: #333;
+  font-size: 1.5rem;
+  margin: 0 0 0.75rem 0;
+  font-weight: 700;
+}
+
+.flight-card p {
+  color: #666;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.flight-card p:first-of-type {
+  color: #444;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.flight-card button {
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.flight-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(40, 57, 167, 0.3);
+}
+
+.flight-card button:active {
+  transform: translateY(0);
+}
+
+.results > p {
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+  padding: 3rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+  .search-page {
+    padding: 1.5rem;
+  }
+
+  .search-page h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .search-box {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+    gap: 0.875rem;
+  }
+
+  .flight-card {
+    grid-template-columns: 1fr;
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .flight-card h3 {
+    font-size: 1.25rem;
+  }
+
+  .flight-card button {
+    width: 100%;
+  }
+}
+
+/* Responsive Design - Mobile */
+@media (max-width: 480px) {
+  .search-page {
+    padding: 1rem;
+  }
+
+  .search-page h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .search-box {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .search-box input,
+  .search-box select,
+  .search-box button {
+    padding: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .flight-card {
+    padding: 1rem;
+  }
+
+  .flight-card h3 {
+    font-size: 1.1rem;
+  }
+
+  .flight-card p {
+    font-size: 0.95rem;
+  }
+
+  .flight-card button {
+    padding: 0.65rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .results > p {
+    padding: 2rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+/* Loading State */
+.search-box button.loading {
+  position: relative;
+  color: transparent;
+}
+
+.search-box button.loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid white;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spinner 0.6s linear infinite;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Price Highlight */
+.flight-card p:last-of-type {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #28a745;
+}
+
+/* Focus visible for accessibility */
+.search-box input:focus-visible,
+.search-box select:focus-visible,
+.search-box button:focus-visible,
+.flight-card button:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
 }

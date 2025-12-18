@@ -30,8 +30,7 @@ export class Register {
       
       this.flightService.register(user).subscribe({
         next: (response) => {
-          alert('Registration Successful! Please login.');
-          this.router.navigate(['/login']);
+            this.router.navigate(['/login']);
         },
         error: (err) => {
           console.error(err);

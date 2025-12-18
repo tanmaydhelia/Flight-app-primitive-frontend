@@ -21,17 +21,25 @@ export class Login {
     password: ['', Validators.required]
   });
 
+  errorMessage = '';
+  isLoading = false;
+
   onSubmit() {
     if (this.loginForm.valid) {
+      this.errorMessage = '';
+      this.isLoading = true;
       const request = this.loginForm.value as any;
       
       this.flightService.login(request).subscribe({
         next: (token) => {
           console.log('Login successful, Token:', token);
+          this.isLoading = false;
           this.router.navigate(['/search']);
         },
         error: (err) => {
-          alert('Login Failed: ' + err.message);
+          this.isLoading = false;
+          this.errorMessage = 'Invalid username or password. Please try again.';
+          console.error('Login error:', err);
         }
       });
     }

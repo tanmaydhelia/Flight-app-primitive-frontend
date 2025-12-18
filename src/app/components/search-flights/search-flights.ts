@@ -19,6 +19,8 @@ export class SearchFlights {
   hasSearched = signal(false);
   isLoading = signal(false);
 
+  minDate = new Date().toISOString().split('T')[0];
+
   searchForm = this.fb.group({
     from: ['DEL', Validators.required],
     to: ['VNS', Validators.required],
