@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AuthRequest, FlightSearchRequest, FlightSummary, UserCredential } from '../models/flight-app';
+import { AuthRequest, BookingRequest, FlightSearchRequest, FlightSummary, ItineraryDto, UserCredential } from '../models/flight-app';
 import { delay, Observable, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -51,6 +51,14 @@ export class FlightService {
     // Simple filter to mimic backend search
     
     return this.http.post<FlightSummary[]>(`${this.GATEWAY_URL}/flight/api/search`, criteria);
+  }
+
+  //5. Book Flight
+  bookFlight(flightId: number, request: BookingRequest): Observable<ItineraryDto> {
+    return this.http.post<ItineraryDto>(
+      `${this.GATEWAY_URL}/booking/api/book/${flightId}`, 
+      request
+    );
   }
 
 }

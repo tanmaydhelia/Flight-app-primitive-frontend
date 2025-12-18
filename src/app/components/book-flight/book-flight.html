@@ -1,0 +1,46 @@
+<div class="booking-page">
+  <div class="booking-card">
+    <h2>Flight Booking</h2>
+    <form [formGroup]="bookingForm" (ngSubmit)="onBook()">
+      <div class="section">
+        <h3>Contact Info</h3>
+        <div class="grid-inputs">
+          <input type="text" formControlName="name" placeholder="Full Name" />
+          <input type="email" formControlName="email" placeholder="Email" />
+          <input
+            type="number"
+            formControlName="numberOfSeats"
+            (input)="syncPassengerForms()"
+            placeholder="Seats"
+          />
+        </div>
+      </div>
+
+      <div formArrayName="passengers" class="section">
+        <h3>Passenger Details</h3>
+        @for (p of passengers.controls; track i; let i = $index) {
+        <div [formGroupName]="i" class="passenger-item">
+          <h4>Passenger {{ i + 1 }}</h4>
+          <div class="grid-inputs">
+            <input type="text" formControlName="name" placeholder="Name" />
+            <input type="number" formControlName="age" placeholder="Age" />
+            <select formControlName="gender">
+              <option value="MALE">Male</option>
+              <option value="FEMALE">Female</option>
+            </select>
+            <select formControlName="mealType">
+              <option value="VEG">Veg</option>
+              <option value="NON_VEG">Non-Veg</option>
+            </select>
+            <input type="text" formControlName="seatNumber" placeholder="Seat (e.g. 1A)" />
+          </div>
+        </div>
+        }
+      </div>
+
+      <button type="submit" [disabled]="bookingForm.invalid" class="btn-book">
+        Confirm Booking
+      </button>
+    </form>
+  </div>
+</div>
