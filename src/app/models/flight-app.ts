@@ -48,9 +48,9 @@ export interface BookingRequest {
 
 export interface PassengerDto {
   name: string;
-  gender: 'MALE' | 'FEMALE' | 'OTHER'; // Based on Gender.java
+  gender: 'MALE' | 'FEMALE' | 'OTHER'; 
   age: number;
-  mealType: 'VEG' | 'NON_VEG'; // Based on MealType.java
+  mealType: 'VEG' | 'NON_VEG'; 
   seatNumber: string;
 }
 
@@ -59,20 +59,19 @@ export interface LegDto {
   flightId: number;
   fromAirport: string;
   toAirport: string;
-  departureTime: string; // LocalDateTime handled as ISO string
-  arrivalTime: string;   // LocalDateTime handled as ISO string
-  segmentType: 'OUTBOUND' | 'INBOUND'; // Based on TripSegmentType.java
-  status: 'BOOKED' | 'CANCELLED';      // Based on BookingStatus.java
+  departureTime: string; 
+  arrivalTime: string;   
+  segmentType: 'OUTBOUND' | 'INBOUND'; 
+  status: 'BOOKED' | 'CANCELLED';      
   passengers: PassengerDto[];
 }
 
-// Matches com.flightbookingservice.dto.ItineraryDto
 export interface ItineraryDto {
   pnr: string;
   userName: string;
   email: string;
-  status: 'BOOKED' | 'CANCELLED'; // Based on BookingStatus.java
-  totalAmount: number;            // Mapped from totalAmount in ItineraryDto.java
-  createdTime: string;            // LocalDateTime
-  legs: LegDto[];                 // Mapped from List<LegDto> in ItineraryDto.java
+  status: 'BOOKED' | 'CANCELLED'; 
+  totalAmount: number;            
+  createdTime: string;            
+  legs: LegDto[];                 
 }

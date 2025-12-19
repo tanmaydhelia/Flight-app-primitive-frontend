@@ -21,6 +21,7 @@ export class SearchFlights {
   isLoading = signal(false);
 
   minDate = new Date().toISOString().split('T')[0];
+  
 
   searchForm = this.fb.group({
     from: ['DEL', Validators.required],
@@ -30,6 +31,7 @@ export class SearchFlights {
   });
 
   onSearch() {
+    console.log(this.minDate);
     if (this.searchForm.valid) {
       this.isLoading.set(true);
       this.hasSearched.set(true);

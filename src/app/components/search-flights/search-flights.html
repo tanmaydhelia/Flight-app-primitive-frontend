@@ -3,7 +3,7 @@
 
   <form [formGroup]="searchForm" (ngSubmit)="onSearch()" class="search-box">
     <input formControlName="from" placeholder="From (e.g. Del)" />
-    <input formControlName="to" placeholder="To (e.g. VNS)" />
+    <input formControlName="to" placeholder="To (e.g. B)" />
       <input type="date" formControlName="journeyDate" [min]="minDate" />
     <select formControlName="tripType">
       <option value="ONE_WAY">One Way</option>
