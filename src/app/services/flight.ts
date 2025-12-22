@@ -57,7 +57,8 @@ export class FlightService {
     if(!token) return null;
     try{
       const decoded: any = jwtDecode(token);
-      return decoded.sub + "@example.com";
+      // Extract email claim
+      return typeof decoded?.email === 'string' ? decoded.email : null;
     }
     catch(e){
       return null;
