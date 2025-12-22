@@ -1,0 +1,26 @@
+<nav class="navbar">
+  <div class="nav-brand">
+    <h1 routerLink="/search" style="cursor: pointer">Flight Booking App</h1>
+  </div>
+
+  <div class="nav-links" *ngIf="isLoggedIn()">
+    <a routerLink="/search" routerLinkActive="active">Search Flights</a>
+    <a routerLink="/profile" routerLinkActive="active">Profile</a>
+
+    <a
+      *ngIf="flightService.isAdmin()"
+      routerLink="/admin"
+      routerLinkActive="active"
+      class="admin-link"
+    >
+      Admin Panel
+    </a>
+
+    <button (click)="logout()" class="btn-logout">Logout</button>
+  </div>
+
+  <div class="nav-links" *ngIf="!isLoggedIn()">
+    <a routerLink="/login" routerLinkActive="active">Login</a>
+    <a routerLink="/register" routerLinkActive="active">Register</a>
+  </div>
+</nav>

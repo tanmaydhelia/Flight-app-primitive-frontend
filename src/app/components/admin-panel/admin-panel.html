@@ -1,0 +1,61 @@
+<div class="container mt-4">
+  <h2>Admin Panel</h2>
+  <div *ngIf="status" class="alert alert-warning">{{ status }}</div>
+
+  <form [formGroup]="flightForm" (ngSubmit)="addInventory()" class="card p-4 shadow-sm">
+    <h5>Add Flight to Airline Inventory</h5>
+
+    <div class="row">
+      <div class="col-md-12 mb-3">
+        <label class="form-label">Airline Code</label>
+        <input
+          type="text"
+          formControlName="airlineCode"
+          class="form-control"
+          placeholder="e.g., AI"
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">From Airport</label>
+        <input type="text" formControlName="fromAirport" class="form-control" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">To Airport</label>
+        <input type="text" formControlName="toAirport" class="form-control" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Departure Time</label>
+        <input type="datetime-local" formControlName="departureTime" class="form-control" />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Arrival Time</label>
+        <input type="datetime-local" formControlName="arrivalTime" class="form-control" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Price (INR)</label>
+        <input type="number" formControlName="price" class="form-control" />
+      </div>
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Total Seats</label>
+        <input type="number" formControlName="totalSeats" class="form-control" />
+      </div>
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Available Seats</label>
+        <input type="number" formControlName="availabeSeats" class="form-control" />
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3 w-100" [disabled]="flightForm.invalid">
+      Submit Inventory
+    </button>
+  </form>
+</div>

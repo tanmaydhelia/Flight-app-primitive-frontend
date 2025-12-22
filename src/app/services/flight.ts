@@ -44,6 +44,10 @@ export class FlightService {
     );
   }
 
+  changePassword(request: any): Observable<string> {
+    return this.http.put(`${this.GATEWAY_URL}/auth/change-password`, request, { responseType: 'text' });
+  }
+
   cancelFlight(pnr: string): Observable<string> {
     return this.http.delete(`${this.GATEWAY_URL}/booking/api/cancel/${pnr}`, {responseType:'text'});
   }
@@ -57,7 +61,6 @@ export class FlightService {
     if(!token) return null;
     try{
       const decoded: any = jwtDecode(token);
-      // Extract email claim
       return typeof decoded?.email === 'string' ? decoded.email : null;
     }
     catch(e){
@@ -65,4 +68,33 @@ export class FlightService {
     }
   }
 
+  getRole(): string | null {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    try {
+      const decoded: any = jwtDecode(token);
+      return decoded?.role || null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  getUsername(): string | null {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    try {
+      const decoded: any = jwtDecode(token);
+      return decoded?.sub || null; // JWT 'sub' is usually the username
+    } catch (e) {
+      return null;
+    }
+  }
+
+  isAdmin(): boolean {
+    return this.getRole() === 'ROLE_ADMIN';
+  }
+
+  addFlightInventory(request: any): Observable<string> {
+    return this.http.post(`${this.GATEWAY_URL}/flight/api/airline/inventory/add`, request, { responseType: 'text' });
+  }
 }
