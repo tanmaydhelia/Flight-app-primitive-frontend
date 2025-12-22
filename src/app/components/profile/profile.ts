@@ -2,19 +2,23 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
 import { FlightService } from '../../services/flight';
 import { ItineraryDto } from '../../models/flight-app';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
 export class Profile implements OnInit {
   private flightService = inject(FlightService);
+  private router = inject(Router);
 
   bookings = signal<ItineraryDto[]>([]); 
   userEmail = signal<string | null>(null);
+  showModal = signal(false);
+  pnrToCancel = signal<string | null>(null);
 
   ngOnInit(): void {
     const email = this.flightService.getUserEmail();
@@ -38,15 +42,26 @@ export class Profile implements OnInit {
     });
   }
 
-  onCancel(pnr: string) {
-    if (confirm(`Are you sure--Cancel ${pnr}`)) {
+  openCancelPopup(pnr: string) {
+    this.pnrToCancel.set(pnr);
+    this.showModal.set(true);
+  }
+
+  closePopup() {
+    this.showModal.set(false);
+    this.pnrToCancel.set(null);
+  }
+
+  confirmCancellation() {
+    const pnr = this.pnrToCancel();
+    if (pnr) {
       this.flightService.cancelFlight(pnr).subscribe({
-        next: (msg) => {
-          alert(msg);
-          const currentEmail = this.userEmail();
-          if (currentEmail) this.loadBookings(currentEmail);
+        next: () => {
+          this.closePopup();
+          const email = this.userEmail();
+          if (email) this.loadBookings(email);
         },
-        error: (err) => console.error(`Cancellation Failed for pnr: ${pnr}` + err.message),
+        error: (err) => alert("Error: " + err.message)
       });
     }
   }

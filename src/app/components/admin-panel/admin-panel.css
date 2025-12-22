@@ -1,0 +1,84 @@
+/* Container Spacing */
+.container {
+    max-width: 800px;
+    margin-bottom: 3rem;
+}
+
+/* Heading Style */
+h2 {
+    color: #1a237e; /* Indigo 900 */
+    font-weight: 700;
+    border-left: 5px solid #3949ab;
+    padding-left: 15px;
+    margin-bottom: 1.5rem;
+}
+
+/* Card Design */
+.card {
+    border: none;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 10px 25px rgba(26, 35, 126, 0.1) !important;
+    transition: transform 0.2s;
+}
+
+.card h5 {
+    color: #3949ab;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+/* Form Labels */
+.form-label {
+    font-weight: 600;
+    color: #455a64;
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+}
+
+/* Input Fields */
+.form-control {
+    border: 2px solid #e8eaf6;
+    border-radius: 8px;
+    padding: 0.6rem 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #3949ab;
+    box-shadow: 0 0 0 0.2rem rgba(57, 73, 171, 0.15);
+    background-color: #fafafa;
+}
+
+/* Submit Button - Indigo Theme */
+.btn-primary {
+    background-color: #3949ab;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: #283593;
+    transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+    background-color: #c5cae9;
+    cursor: not-allowed;
+}
+
+/* Alert Styling */
+.alert-warning {
+    background-color: #fff3e0;
+    border: 1px solid #ffe0b2;
+    color: #e65100;
+    border-radius: 8px;
+    font-weight: 500;
+}

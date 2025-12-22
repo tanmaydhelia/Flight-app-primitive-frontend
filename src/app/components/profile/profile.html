@@ -1,6 +1,11 @@
 <div class="profile-container">
-    <div class="profile-details">
-        <h3>Email: {{ userEmail() || 'Not set' }}</h3>
+    <div class="profile-header">
+        <div class="profile-details">
+            <h3>Account: {{ userEmail() || 'Not set' }}</h3>
+        </div>
+        <button routerLink="/change-password" class="btn-settings">
+            Change Password
+        </button>
     </div>
 
     <h1>Booking History</h1>
@@ -14,12 +19,25 @@
             <p>Total Amount: Rs.{{booking.totalAmount}}</p>
         </div>
         
-        <button *ngIf="booking.status === 'BOOKED'" (click)="onCancel(booking.pnr)" class="cancel-btn">
+        <button *ngIf="booking.status === 'BOOKED'" 
+                (click)="openCancelPopup(booking.pnr)" 
+                class="cancel-btn">
             Cancel Booking
         </button>
     </div>
 
     <div *ngIf="bookings().length === 0" class="no-data">
         <p>No booking history found.</p>
+    </div>
+
+    <div class="modal-overlay" *ngIf="showModal()">
+        <div class="modal-content">
+            <h3>Confirm Cancellation</h3>
+            <p>Are you sure you want to cancel booking <strong>{{ pnrToCancel() }}</strong>?</p>
+            <div class="modal-actions">
+                <button (click)="confirmCancellation()" class="btn-confirm">Yes, Cancel It</button>
+                <button (click)="closePopup()" class="btn-close">Go Back</button>
+            </div>
+        </div>
     </div>
 </div>
