@@ -84,7 +84,7 @@ export class FlightService {
     if (!token) return null;
     try {
       const decoded: any = jwtDecode(token);
-      return decoded?.sub || null; // JWT 'sub' is usually the username
+      return decoded?.sub || null;
     } catch (e) {
       return null;
     }

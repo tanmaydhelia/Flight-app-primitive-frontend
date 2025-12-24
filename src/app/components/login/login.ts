@@ -18,7 +18,12 @@ export class Login {
 
   loginForm = this.fb.group({
     username: ['', Validators.required],
-    password: ['', Validators.required]
+    password: [
+      '',[
+      Validators.required,
+      Validators.minLength(8),
+      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/)
+    ]],
   });
 
   errorMessage = '';
@@ -29,18 +34,22 @@ export class Login {
       this.errorMessage = '';
       this.isLoading = true;
       const request = this.loginForm.value as any;
-      
+
       this.flightService.login(request).subscribe({
         next: (token) => {
           console.log('Login successful, Token:', token);
           this.isLoading = false;
           this.router.navigate(['/search']);
+
+          const expiryTime = new Date().getTime() + 60 * 60 * 1000;
+          localStorage.setItem('authToken', token);
+          localStorage.setItem('tokenExpiry', expiryTime.toString());
         },
         error: (err) => {
           this.isLoading = false;
           this.errorMessage = 'Invalid username or password. Please try again.';
           console.error('Login error:', err);
-        }
+        },
       });
     }
   }
