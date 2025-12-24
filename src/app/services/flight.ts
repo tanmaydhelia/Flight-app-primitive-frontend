@@ -97,4 +97,8 @@ export class FlightService {
   addFlightInventory(request: any): Observable<string> {
     return this.http.post(`${this.GATEWAY_URL}/flight/api/airline/inventory/add`, request, { responseType: 'text' });
   }
+
+  getOccupiedSeats(flightId: number): Observable<string[]> {
+  return this.http.get<string[]>(`${this.GATEWAY_URL}/booking/api/seats/${flightId}`);
+  }
 }

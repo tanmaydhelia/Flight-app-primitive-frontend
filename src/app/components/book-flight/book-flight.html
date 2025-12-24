@@ -1,26 +1,53 @@
 <div class="booking-page">
   <div class="booking-card">
     <h2>Flight Booking</h2>
+
+    <div class="section seat-map-container">
+      <h3>Select Seats for Passengers</h3>
+      <div class="seat-grid-scroll">
+        <table class="seat-grid">
+          <tbody>
+            @for (r of rows; track r) {
+            <tr>
+              <td class="row-num">{{r}}</td>
+              @for (c of cols; track c) {
+                @let seatId = r + c;
+                <td>
+                  <button 
+                    type="button"
+                    class="seat-btn"
+                    [class.occupied]="isOccupied(seatId)"
+                    [disabled]="isOccupied(seatId)"
+                    (click)="selectSeat(seatId)">
+                    {{seatId}}
+                  </button>
+                </td>
+              }
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <form [formGroup]="bookingForm" (ngSubmit)="onBook()">
       <div class="section">
         <h3>Contact Info</h3>
         <div class="grid-inputs">
           <input type="text" formControlName="name" placeholder="Full Name" />
           <input type="email" formControlName="email" placeholder="Email" />
-          <input
-            type="number"
-            formControlName="numberOfSeats"
-            (input)="syncPassengerForms()"
-            placeholder="Seats"
-          />
+          <input type="number" formControlName="numberOfSeats" (input)="syncPassengerForms()" placeholder="Seats" />
         </div>
       </div>
 
       <div formArrayName="passengers" class="section">
         <h3>Passenger Details</h3>
         @for (p of passengers.controls; track i; let i = $index) {
-        <div [formGroupName]="i" class="passenger-item">
-          <h4>Passenger {{ i + 1 }}</h4>
+        <div [formGroupName]="i" 
+             class="passenger-item" 
+             [class.active-selection]="activePassengerIndex === i"
+             (click)="setActivePassenger(i)">
+          <h4>Passenger {{ i + 1 }} @if(activePassengerIndex === i){ <span>(Selecting Seat...)</span> }</h4>
           <div class="grid-inputs">
             <input type="text" formControlName="name" placeholder="Name" />
             <input type="number" formControlName="age" placeholder="Age" />
@@ -28,19 +55,13 @@
               <option value="MALE">Male</option>
               <option value="FEMALE">Female</option>
             </select>
-            <select formControlName="mealType">
-              <option value="VEG">Veg</option>
-              <option value="NON_VEG">Non-Veg</option>
-            </select>
-            <input type="text" formControlName="seatNumber" placeholder="Seat (e.g. 1A)" />
+            <input type="text" formControlName="seatNumber" placeholder="Seat" readonly />
           </div>
         </div>
         }
       </div>
 
-      <button type="submit" [disabled]="bookingForm.invalid" class="btn-book">
-        Confirm Booking
-      </button>
+      <button type="submit" [disabled]="bookingForm.invalid" class="btn-book">Confirm Booking</button>
     </form>
   </div>
 </div>
